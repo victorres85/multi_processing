@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Viewer</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Report Viewer</h1>
+    <label for="report-select">Select a report:</label>
+    <select id="report-select">
+        <option value="">--Select a report--</option>
+        <% files.forEach(file => { %>
+            <option value="<%= file %>"><%= file %></option>
+        <% }) %>
+    </select>
+    <iframe id="report-frame" width="100%" height="600px"></iframe>
+    
+    <script>
+        document.getElementById('report-select').addEventListener('change', function() {
+            const selectedFile = this.value;
+            if (selectedFile) {
+                document.getElementById('report-frame').src = `/report/${selectedFile}`;
+                const iframe = document.getElementById('report-frame');
+                iframe.onload = function() {
+                    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                    const headerElement = iframeDocument.getElementsByTagName('header')[0];
+                    const html_ = iframeDocument.getElementsByTagName('html');
+                    
+                    // Create a new link element
+                    const linkElement = document.createElement('link');
+                    linkElement.rel = 'stylesheet';
+                    linkElement.href = '/style.css'; 
+                    
+                    // Append the link element to the head of the iframe document
+                    html_[0].childNodes[0].appendChild(linkElement);
+                    console.log(html_[0].childNodes[0]);
+                }
+            } else {
+                document.getElementById('report-frame').src = '';
+            }
+        });
+    </script>
+</body>
+</html>
