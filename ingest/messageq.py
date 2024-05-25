@@ -21,7 +21,7 @@ class QueueWrapper(object):
         
         try:
             return self.q.get()
-        except Empty:
+        except:
             log.info('q.get() interrupted')
             return 'STOP'
 
@@ -57,7 +57,7 @@ class QueueWrapper(object):
         '''
         If the queue is not writable and is empty the queue is draining.
         '''
-        return self.is_writtable and self.empty
+        return not self.is_writtable and self.empty
     
     @property
     def empty(self) -> bool:

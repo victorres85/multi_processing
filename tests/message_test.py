@@ -23,3 +23,22 @@ def test_empty(queue_wrapper):
 
     queue_wrapper.put('message')
     assert queue_wrapper.q.qsize() == 1
+    assert not queue_wrapper.empty
+
+def test_get(queue_wrapper):
+    queue_wrapper.put('message1')
+    queue_wrapper.put('message2')
+    assert queue_wrapper.get() == 'message1'
+    assert queue_wrapper.get() == 'message2'
+    assert queue_wrapper.empty
+
+def test_get_with_error_returns_stop(queue_wrapper):
+    queue_wrapper.q.get = MagicMock(side_effect=Exception('failed'))
+    assert queue_wrapper.get() == 'STOP'
+
+def test_draining(queue_wrapper):
+    assert queue_wrapper.is_writtable
+    assert queue_wrapper.empty
+    queue_wrapper.prevent_writes()
+    assert not queue_wrapper.is_writtable
+    assert queue_wrapper.is_drained
