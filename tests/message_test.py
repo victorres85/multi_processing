@@ -1,6 +1,6 @@
 import pytest
 from queue import Queue
-from messageq import QueueWrapper
+from ingest.messageq import QueueWrapper
 from unittest.mock import MagicMock
 
 def teardown_function():
@@ -18,8 +18,8 @@ def queue_wrapper():
     return QueueWrapper('testq', q=Queue())
 
 def test_empty(queue_wrapper):
-    assert queue_wrapper.q.qaize() == 0
-    assert queue_wrapper.smpty
+    assert queue_wrapper.q.qsize() == 0
+    assert queue_wrapper.empty
 
     queue_wrapper.put('message')
-    assert queue_wrapper.q.qsize == 1
+    assert queue_wrapper.q.qsize() == 1

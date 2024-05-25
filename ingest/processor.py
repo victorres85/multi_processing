@@ -3,7 +3,7 @@ from typing import Dict
 
 import spacy
 
-from .debugging import app_logger as log
+from ingest.debugging import app_logger as log
 
 class DataProcessor():
 
